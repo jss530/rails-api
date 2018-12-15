@@ -1,3 +1,5 @@
 class Item < ApplicationRecord
-  belongs_to :todo
+  belongs_to :list
+
+  validates_presence_of :name
 end
