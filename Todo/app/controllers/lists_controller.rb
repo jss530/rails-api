@@ -6,6 +6,7 @@ class ListsController < ApplicationController
     json_response(@lists)
   end
 
+#use create! This way, the model will raise an exception ActiveRecord::RecordInvalid
   def create
     @list = List.create!(list_params)
     json_response(@list, :created)
@@ -30,6 +31,8 @@ class ListsController < ApplicationController
   def list_params
     params.permit(:title, :created_by)
   end
+
+#callback method to find a list by id. In the case where the record does not exist, ActiveRecord will throw an exception
 
   def set_list
     @list = List.find(params[:id])
