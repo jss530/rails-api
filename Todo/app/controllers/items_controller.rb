@@ -1,2 +1,47 @@
 class ItemsController < ApplicationController
+  before_action :set_list
+  before_action :set_list_item, only: [:show, :update, :destroy]
+
+  # GET /todos/:todo_id/items
+  def index
+    json_response(@list.items)
+  end
+
+  # GET /todos/:todo_id/items/:id
+  def show
+    json_response(@item)
+  end
+
+  # POST /todos/:todo_id/items
+  def create
+    @list.items.create!(item_params)
+    json_response(@list, :created)
+  end
+
+  # PUT /todos/:todo_id/items/:id
+  def update
+    @item.update(item_params)
+    head :no_content
+  end
+
+  # DELETE /todos/:todo_id/items/:id
+  def destroy
+    @item.destroy
+    head :no_content
+  end
+
+  private
+
+  def item_params
+    params.permit(:name, :done)
+  end
+
+  def set_list
+    @list = List.find(params[:list_id])
+  end
+
+  def set_list_item
+    @item = @list.items.find_by!(id: params[:id]) if @list
+  end
+
 end
